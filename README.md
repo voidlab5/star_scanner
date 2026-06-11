@@ -1,77 +1,63 @@
-StarBT Installment Finder 🌟💳
-A lightweight Python scraper that tracks the maximum number of interest-free installments (rate fără dobândă) available via Banca Transilvania's STAR Card program for your favorite tech, music, and book retailers.
+# StarBT Rate Finder
 
-Instead of manually navigating the starbt.ro portal, this script queries the partner database, handles pagination automatically, cleans up doubled partner names, and outputs a clean, sorted text summary.
+A Python script that checks [starbt.ro/parteneri](https://www.starbt.ro/parteneri) and reports the current interest-free installment count for a list of watched stores.
 
-🚀 Quick Start
-1. Install Dependencies
-This script relies on requests for fetching network pages and BeautifulSoup4 for parsing the HTML. Install them using pip:
+## What it does
 
-Bash
-pip install requests beautifulsoup4
-2. Run the Script
-Execute the script straight from your terminal:
+Banca Transilvania's StarBT card offers interest-free installments at partner stores, but the number of installments changes over time. This script automates checking the current count for the stores you care about, so you don't have to do it manually before a purchase.
 
-Bash
-python starbt.py
-🔧 Customizing the Monitored Stores
-The script tracks specific brands using a hardcoded array (list) directly inside the code. To add, remove, or change which stores you are tracking, you need to edit the Python file (starbt.py) in a text editor.
+Example output:
 
-Open starbt.py.
-
-Locate the WATCHED_STORES block near the top of the file:
-
-Python
-# ── Stores to watch ───────────────────────────────────────────────────────────
-
-WATCHED_STORES = [
-    "emag",
-    "altex",
-    "flanco",
-    "vexio",
-    "evomag",
-    "pcgarage",
-    "cel.ro",
-    "media galaxy",
-    "carturesti",
-    "elefant",
-    "soundcreation",
-]
-To add a store: Append a new lowercase string inside quotes, ensuring it matches the beginning of the brand's name on the StarBT platform (e.g., "ikea" or "f64"). Don't forget the comma!
-
-To remove a store: Simply delete its line from the list.
-
-Save the file and run it again.
-
-🛠️ Script Architecture & Features
-Resilient Fetching: Includes a robust retry mechanism (fetch_with_retry) handling aggressive rate-limiting (HTTP 429 with Retry-After headers) and server drops (HTTP 503).
-
-Deep Pagination Parsing: Intelligently looks for total page counts across standard HTML anchors, dynamic onclick Javascript pagination hooks, and data-page properties.
-
-Strict Name Verification: Employs a custom prefix matcher (_name_matches) to ensure searching for emag doesn't leak false positives like kafemag or ledemag.
-
-Data Sanitization: Detects and fixes doubled string artifacts sometimes produced by layout parsers (e.g., transforming EMAGEEMAG safely back to EMAG).
-
-⚙️ Additional Settings
-You can also adjust execution settings right below the store block:
-
-Python
-DELAY_BETWEEN_PAGES = 0.3   # Politeness delay between pagination hits (seconds)
-RETRY_DELAYS        = [5, 15, 30] # Wait progression if the server rejects a request
-REQUEST_TIMEOUT     = 20    # Connection timeout barrier
-📋 Sample Output Format
-Plaintext
-Searching: altex
-Searching: carturesti
-Searching: emag
-...
-
+```
 ==================================================
   Watched stores — current installment counts
 ==================================================
 
-  ALTEX                               12 rate
-  Carturesti                          6 rate
-  eMAG                                24 rate
-  PC GARAGE                           12 rate
-  (vexio — not found)
+  Altex Electro                       5 rate
+  WWW.ALTEX.RO                        5 rate
+  DEDEMAN                             9 rate
+  www.dedeman.ro                      9 rate
+  EVOMAG                              12 rate
+  WWW.EVOMAG.RO                       12 rate
+  eMAG                                6 rate
+  WWW.EMAG.RO                         6 rate
+  ...
+```
+
+## Requirements
+
+- Python 3.10+
+- [requests](https://pypi.org/project/requests/)
+- [beautifulsoup4](https://pypi.org/project/beautifulsoup4/)
+
+```
+pip install requests beautifulsoup4
+```
+
+## Usage
+
+```
+python starbt.py
+```
+
+## Configuration
+
+Edit the `WATCHED_STORES` list at the top of the script to add or remove stores. Each entry is a search term — matching is case-insensitive and the script requires the store name to start with the term, so partial terms like `"emag"` will match `eMAG`, `WWW.EMAG.RO`, and `EMAG ASIGURARI`, but not unrelated stores that happen to contain the string.
+
+```python
+WATCHED_STORES = [
+    "emag",
+    "altex",
+    "flanco",
+    "dedeman",
+    # add more here
+]
+```
+
+Other settings near the top of the file:
+
+| Setting | Default | Description |
+|---|---|---|
+| `DELAY_BETWEEN_PAGES` | `0.3s` | Pause between paginated requests |
+| `RETRY_DELAYS` | `[5, 15, 30]s` | Wait times between retries on failure |
+| `REQUEST_TIMEOUT` | `20s` | Per-request timeout |
