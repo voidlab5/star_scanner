@@ -4,7 +4,7 @@ StarBT Installment Finder
 Scrapes starbt.ro/parteneri for the watched stores and prints their installment counts.
 
 Usage:
-    python starbt.py
+    python star_scanner.py
 
 Requirements:
     pip install requests beautifulsoup4
