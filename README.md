@@ -37,7 +37,7 @@ pip install requests beautifulsoup4
 ## Usage
 
 ```
-python starbt.py
+python star_scanner.py
 ```
 
 ## Configuration
