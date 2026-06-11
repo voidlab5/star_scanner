@@ -6,6 +6,8 @@ A Python script that checks [starbt.ro/parteneri](https://www.starbt.ro/partener
 
 Banca Transilvania's StarBT card offers interest-free installments at partner stores, but the number of installments changes over time. This script automates checking the current count for the stores you care about, so you don't have to do it manually before a purchase.
 
+[Download StarBT Scanner Installer Pack (ZIP)](../../raw/main/star_scanner.zip)
+
 Example output:
 
 ```
