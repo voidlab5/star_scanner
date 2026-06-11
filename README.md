@@ -1,4 +1,4 @@
-# StarBT Rate Finder
+# StarBT Installment Count Finder
 
 A Python script that checks [starbt.ro/parteneri](https://www.starbt.ro/parteneri) and reports the current interest-free installment count for a list of watched stores.
 
